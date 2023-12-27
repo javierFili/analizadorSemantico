@@ -6,6 +6,7 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Ellipse, Color
 from kivy.graphics import Line
 import estructura.ConstructorArbol as constructor
+from structure.tree.Tree import Tree
 
 
 # maximo de numeros en la operacion 7.+6 => 13 caracteres.
@@ -14,10 +15,12 @@ import estructura.ConstructorArbol as constructor
 #
 
 def creacion(self):
-  funcion_matematica = "4*3*4-3*4+4+3*4+5*3"
-  funcion_matematica = funcion_matematica.replace(" ", "")
-  expresion_jerarquizada = constructor.jerarquizar_operaciones(funcion_matematica)
-  arbol = constructor.constructor_de_Arbol(expresion_jerarquizada)
+  funcion_matematica = '3+2-3*4-2+3-7-8+8'  # (1*2*3)-(4*5)+6+7
+  tree = Tree()
+  tree.parse(funcion_matematica)
+  print(tree.__str__())
+  arbol = tree.viewTreeUI()
+  print(arbol)
   for posiciones_valores in zip(arbol):
     Color(1, 0, 0)
     x = posiciones_valores[0][0][0]
@@ -27,7 +30,9 @@ def creacion(self):
     texto = posiciones_valores[0][1]
     Line(points=[x, y, x1, y1], width=2)
     self.circle = Ellipse(pos=(x, y), size=(30, 30))
-    self.text_label = Label(text=(texto), pos=(x, y), size=(30, 30), halign='center', valign='middle')
+    self.text_label = Label(text=texto, size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
+                            valign='middle')
+    self.add_widget(self.text_label)
 
 
 class MyWidget(Widget):
@@ -44,7 +49,7 @@ class MyApp(App):
   def build(self):
     layout = BoxLayout(orientation='vertical', size_hint=(None, None))
     # Parte superior: Entrada de texto
-    self.text_input = TextInput(text='', multiline=False)
+    self.text_input = TextInput(text='3+2-3*4-2+3-7-8+8', multiline=False)
     layout.add_widget(self.text_input)
     # Parte media: Resultado
     self.result_label = Label(text='Resultado:')
@@ -58,13 +63,7 @@ class MyApp(App):
     return layout
 
   def update_circle(self, instance, value):
-    try:
-      # Intenta convertir el texto a un número para usar como radio
-      radius = float(value)
-      self.my_widget.update_circle(radius)
-      self.result_label.text = f'Resultado: {radius}'
-    except ValueError:
-      self.result_label.text = 'Error: Ingrese un número válido'
+    creacion(value)
 
   def tree_visualizer(self):
     constructor.obtener_elemento()
