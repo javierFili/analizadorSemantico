@@ -13,46 +13,19 @@ class Tree(Node):
     super(Tree, self).__init__()
     self.root = None
 
-  def viewTree(self, tree, screen_width, screen_height, data_tree, node_width, node_height, position):
-    x = screen_width + position * screen_width
-    y = screen_height + position * screen_height
-    x_base = screen_width
-    y_base = screen_height
-    if hasattr(tree, 'value'):
-      print(tree.value)
-      data_tree.append(((x, y), tree.value, (x_base, y_base)))
-    elif tree:
-      self.viewTree(tree.left, x - screen_width / 2, y - screen_height, data_tree, node_width, node_height,
-                    2 * position)
-
-      if hasattr(tree, 'symbol'):
-        print(tree.symbol)
-        data_tree.append(((x, y), tree.symbol, (x_base, y_base)))
-
-      self.viewTree(tree.right, x + screen_width / 2, y - screen_height, data_tree, node_width, node_height,
-                    2 * position + 1)
-
-  # view_tree(tree, data_tree,300,600,300,600,4)
   def view_tree(self, tree, data_tree, x, y, x_base, y_base, nivel):
     if hasattr(tree, 'value'):
-      print(tree.value)
       data_tree.append(((x, y), tree.value, (x_base, y_base)))
     elif tree:
       self.view_tree(tree.left, data_tree, x - (nivel) * 40, y - 60, x, y, nivel - 1)
       if hasattr(tree, 'symbol'):
         data_tree.append(((x, y), tree.symbol, (x_base, y_base)))
-        print(tree.symbol)
       self.view_tree(tree.right, data_tree, x + (nivel) * 40, y - 60, x, y, nivel - 1)
 
   def viewTreeUI(self):
-    screen_width = 800
-    screen_height = 600
     nivel = self.get_size()
-    node_width = screen_width / 32  # 32 nodes on level botton
-    node_height = screen_height / nivel
     data_tree = []
-    # self.viewTree(self.root, screen_width / 2, screen_height, data_tree, node_width, node_height, nivel)
-    self.view_tree(self.root, data_tree, 600, 600, 600, 600, nivel)
+    self.view_tree(self.root, data_tree, 600, 550, 600, 550, nivel)
     return data_tree
 
   def get_size(self):
