@@ -5,40 +5,71 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.graphics import Ellipse, Color
 from kivy.graphics import Line
+
+from structure.exceptions.EvalException import EvalException
+from structure.exceptions.NodeException import NodeException
+from structure.exceptions.ParseException import ParseException
+from structure.exceptions.TokenizeException import TokenizeException
 from structure.tree.Tree import Tree
 from kivy.uix.button import Button
 
 
 def creacion(self, funcion_matematica):
   # funcion_matematica = '3+23*4-2+3-7-8+8'  # (1*2*3)-(4*5)+6+7
-  self.canvas.clear()
-  tree = Tree()
-  tree.parse(funcion_matematica)
-  print(tree.evaluate())
-  x = 300
-  y = 100
-  self.result_text = Label(text="Resultado:", size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
-                           valign='middle')
-  self.add_widget(self.result_text)
-  self.result = Label(text=str(tree.evaluate()), size_hint=(None, None), pos=(x, y - 40), size=(30, 30),
-                      halign='center', valign='middle')
-  self.add_widget(self.result)
-  self.result_jerarquia = Label(text=str(tree.root), size_hint=(None, None), pos=(x, y - 80), size=(30, 30),
-                                halign='center', valign='middle')
-  self.add_widget(self.result_jerarquia)
-  arbol = tree.viewTreeUI()
-  for posiciones_valores in zip(arbol):
-    Color(1, 0, 0)
-    x = posiciones_valores[0][0][0]
-    y = posiciones_valores[0][0][1]
-    x1 = posiciones_valores[0][2][0]
-    y1 = posiciones_valores[0][2][1]
-    texto = posiciones_valores[0][1]
-    Line(points=[x, y, x1, y1], width=2)
-    Ellipse(pos=(x, y), size=(30, 30))
-    text_label = Label(text=texto, size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
-                       valign='middle')
-    self.add_widget(text_label)
+  try:
+    self.canvas.clear()
+    tree = Tree()
+    tree.parse(funcion_matematica)
+    print(tree.evaluate())
+    x = 300
+    y = 100
+    self.result_text = Label(text="Resultado:", size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
+                             valign='middle')
+    self.add_widget(self.result_text)
+    self.result = Label(text=str(tree.evaluate()), size_hint=(None, None), pos=(x, y - 40), size=(30, 30),
+                        halign='center', valign='middle')
+    self.add_widget(self.result)
+    self.result_jerarquia = Label(text=str(tree.root), size_hint=(None, None), pos=(x, y - 80), size=(30, 30),
+                                  halign='center', valign='middle')
+    self.add_widget(self.result_jerarquia)
+    arbol = tree.viewTreeUI()
+    for posiciones_valores in zip(arbol):
+      Color(1, 0, 0)
+      x = posiciones_valores[0][0][0]
+      y = posiciones_valores[0][0][1]
+      x1 = posiciones_valores[0][2][0]
+      y1 = posiciones_valores[0][2][1]
+      texto = posiciones_valores[0][1]
+      Line(points=[x, y, x1, y1], width=2)
+      Ellipse(pos=(x, y), size=(30, 30))
+      text_label = Label(text=texto, size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
+                         valign='middle')
+      self.add_widget(text_label)
+  except (EvalException):
+
+    self.result_text = Label(text="Existio un error al momento de evaluar", size_hint=(None, None), pos=(300, 300),
+                             size=(30, 30),
+                             halign='center', valign='middle')
+    self.add_widget(self.result_text)
+
+  except  (NodeException):
+    self.result_text = Label(text="Existio un error en uno de los signos", size_hint=(None, None),
+                             pos=(300, 300),
+                             size=(30, 30),
+                             halign='center', valign='middle')
+    self.add_widget(self.result_text)
+  except  ParseException:
+    self.result_text = Label(text="Existio un error al momento de realizar la jerarquizacion", size_hint=(None, None),
+                             pos=(300, 300),
+                             size=(30, 30),
+                             halign='center', valign='middle')
+    self.add_widget(self.result_text)
+  except TokenizeException:
+    self.result_text = Label(text="Existio un error al momento de realizar los tokens", size_hint=(None, None),
+                             pos=(300, 300),
+                             size=(30, 30),
+                             halign='center', valign='middle')
+    self.add_widget(self.result_text)
 
 
 class MyWidget(Widget):
