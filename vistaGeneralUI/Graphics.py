@@ -5,7 +5,6 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.graphics import Ellipse, Color
 from kivy.graphics import Line
-
 from structure.exceptions.EvalException import EvalException
 from structure.exceptions.NodeException import NodeException
 from structure.exceptions.ParseException import ParseException
@@ -15,7 +14,6 @@ from kivy.uix.button import Button
 
 
 def creacion(self, funcion_matematica):
-  # funcion_matematica = '3+23*4-2+3-7-8+8'  # (1*2*3)-(4*5)+6+7
   try:
     self.canvas.clear()
     tree = Tree()
@@ -34,7 +32,7 @@ def creacion(self, funcion_matematica):
     self.add_widget(self.result_jerarquia)
     arbol = tree.viewTreeUI()
     for posiciones_valores in zip(arbol):
-      Color(1, 0, 0)
+      Color(0, 0,1 )
       x = posiciones_valores[0][0][0]
       y = posiciones_valores[0][0][1]
       x1 = posiciones_valores[0][2][0]
@@ -88,7 +86,7 @@ class MyApp(App):
   def build(self):
     self.layout = BoxLayout(orientation='vertical', size_hint=(None, None))
     # Parte superior: Entrada de texto
-    self.text_input = TextInput(text='3+23*4-2+3-7-8+8', multiline=False)
+    self.text_input = TextInput(text='3+23*4-3-7-8+8', multiline=False)
     self.layout.add_widget(self.text_input)
     # Parte inferior: SVG o Canvas con una circunferencia
     self.my_widget = MyWidget(self.text_input.text)
