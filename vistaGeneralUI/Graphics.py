@@ -7,7 +7,6 @@ from kivy.graphics import Ellipse, Color
 from kivy.graphics import Line
 from structure.tree.Tree import Tree
 from kivy.uix.button import Button
-from kivy.core.window import Window
 
 
 def creacion(self, funcion_matematica):
@@ -16,6 +15,17 @@ def creacion(self, funcion_matematica):
   tree = Tree()
   tree.parse(funcion_matematica)
   print(tree.evaluate())
+  x = 300
+  y = 100
+  self.result_text = Label(text="Resultado:", size_hint=(None, None), pos=(x, y), size=(30, 30), halign='center',
+                           valign='middle')
+  self.add_widget(self.result_text)
+  self.result = Label(text=str(tree.evaluate()), size_hint=(None, None), pos=(x, y - 40), size=(30, 30),
+                      halign='center', valign='middle')
+  self.add_widget(self.result)
+  self.result_jerarquia = Label(text=str(tree.root), size_hint=(None, None), pos=(x, y - 80), size=(30, 30),
+                                halign='center', valign='middle')
+  self.add_widget(self.result_jerarquia)
   arbol = tree.viewTreeUI()
   for posiciones_valores in zip(arbol):
     Color(1, 0, 0)
@@ -33,7 +43,7 @@ def creacion(self, funcion_matematica):
 
 class MyWidget(Widget):
   def __init__(self, funcion, **kwargs):
-    super(MyWidget, self,).__init__(**kwargs)
+    super(MyWidget, self, ).__init__(**kwargs)
     with self.canvas:
       # self.canvas.draw("Hola Mundo!", (20, 40), font_size=24)
       creacion(self, funcion)
@@ -49,9 +59,6 @@ class MyApp(App):
     # Parte superior: Entrada de texto
     self.text_input = TextInput(text='3+23*4-2+3-7-8+8', multiline=False)
     self.layout.add_widget(self.text_input)
-    # Parte media: Resultado
-    self.result_label = Label(text='Resultado:')
-    self.layout.add_widget(self.result_label)
     # Parte inferior: SVG o Canvas con una circunferencia
     self.my_widget = MyWidget(self.text_input.text)
     self.layout.add_widget(self.my_widget)
@@ -66,11 +73,3 @@ class MyApp(App):
     self.layout.remove_widget(self.my_widget)
     self.my_widget = MyWidget(texto_ingresado)
     self.layout.add_widget(self.my_widget)
-    # self.my_widget.update_circle(texto_ingresado)
-
-  def tree_visualizer(self):
-    pass
-
-
-if __name__ == '__main__':
-  MyApp().run()

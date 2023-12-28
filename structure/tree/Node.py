@@ -7,6 +7,7 @@ class Node(object):
   def setVariable(self, name, value):
     return None
 
+
   # Evaluate the node
   def evaluate(self):
     return None
