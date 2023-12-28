@@ -1,5 +1,5 @@
 Se estan usando las siguiente librerias:
-    Kivy, re, copy,
+    Kivy, re, copy.
 La aplicacion se corre en la archivo "starApp.py"
 ![img_1.png](img_1.png)
 Tenemos la siguiente interfaz en la cual se ingresa la funcion matematica desea.
